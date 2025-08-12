@@ -8,9 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin123
       MYSQL_DATABASE: sistema_productos
-      # Usando solo el usuario root como se especificó
     ports:
-      - "3307:3306"
+      - "3306:3306" # Lo exponemos por si quieres conectarte desde tu PC
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -75,7 +74,7 @@ services:
       - categoria-service
       - products-service
     ports:
-      - "4200:80"
+      - "80:80" # Exponemos el frontend en el puerto 80 del servidor
     environment:
       - NODE_ENV=production
       - API_URL_CATEGORIAS=http://categoria-service:8082/api/categorias
