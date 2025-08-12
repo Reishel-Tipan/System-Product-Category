@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # Base de datos MySQL
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: sistema_productos
+      # Usando solo el usuario root como se especificó
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-padmin123"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Servicio de Categorías
+  categoria-service:
+    build:
+      context: ./backend/categoria
+      dockerfile: Dockerfile
+    container_name: categoria-service
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_NAME=sistema_productos
+      - DB_USER=root
+      - DB_PASSWORD=admin123
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Servicio de Productos
+  products-service:
+    build:
+      context: ./backend/products
+      dockerfile: Dockerfile
+    container_name: products-service
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_NAME=sistema_productos
+      - DB_USER=root
+      - DB_PASSWORD=admin123
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Frontend Angular
+  frontend:
+    build:
+      context: ./frontend/system
+      dockerfile: Dockerfile
+    container_name: frontend-app
+    depends_on:
+      - categoria-service
+      - products-service
+    ports:
+      - "4200:80"
+    environment:
+      - NODE_ENV=production
+      - API_URL_CATEGORIAS=http://categoria-service:8082/api/categorias
+      - API_URL_PRODUCTOS=http://products-service:8081/api/products
+    networks:
+      - app-network
+    restart: unless-stopped
+
+# Volúmenes para persistencia de datos
+volumes:
+  mysql_data:
+
+# Red para la comunicación entre contenedores
+networks:
+  app-network:
+    driver: bridge
