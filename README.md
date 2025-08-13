@@ -1,6 +1,17 @@
 # Sistema de Gestión de Productos y Categorías
 
-Sistema completo para la gestión de productos y categorías con Angular 19 (frontend), Spring Boot (backend) y MySQL. Despliegue simplificado con Docker Compose.
+Sistema completo para la gestión de productos y categorías con Angular 19 (frontend), Spring Boot (backend) y MySQL.  
+Despliegue simplificado y orquestado con Docker Compose.
+
+---
+
+## 📝 Requisitos Previos
+
+- Tener instalado **Docker**: https://docs.docker.com/get-docker/  
+- Tener instalado **Docker Compose**: https://docs.docker.com/compose/install/  
+- Acceso a un servidor Linux o plataforma cloud (DigitalOcean, AWS EC2, Render, Railway, etc.) con permisos para instalar y ejecutar Docker.  
+
+---
 
 ## 🚀 Instalación Rápida
 
@@ -19,14 +30,13 @@ docker-compose up --build -d
 
 ## 🌐 Acceso a la aplicación
 
-- **Frontend (Angular)**: http://localhost:4200
-- **API Productos**: http://localhost:8081/api/products
-- **API Categorías**: http://localhost:8082/api/categories
-- **Base de datos MySQL**:
-  - Puerto: 3307
-  - Usuario: root
-  - Contraseña: admin123
-  - Base de datos: productdb / categorydb
+Una vez desplegado en el servidor remoto, accede desde un navegador usando la IP pública o dominio asignado:
+
+- **Frontend (Angular)**: http://159.223.194.175
+- **API Productos**: http://159.223.194.175:8081/api/products
+- **API Categorías**: ttp://159.223.194.175:8082/api/categories
+
+Para pruebas locales (en tu máquina de desarrollo), puedes usar http://localhost y los puertos configurados.
 
 ## 🛠️ Comandos útiles
 
@@ -41,6 +51,8 @@ System-Product-Category/
 ├── backend/             # Servicios backend (Spring Boot)
 │   ├── products/        # Servicio de productos
 │   └── categoria/       # Servicio de categorías
+├── docker/               # Configuración Docker y librerías
+│   └── libs/             # Archivos JAR para microservicios
 ├── frontend/            # Aplicación Angular
 └── docker-compose.yml   # Configuración de Docker Compose
 ```
@@ -50,7 +62,7 @@ System-Product-Category/
 - **Frontend**: Angular 19 con diseño responsivo
 - **Backend**: Microservicios Spring Boot
 - **Base de datos**: MySQL 8.0
-- **Despliegue**: Configuración optimizada con Docker Compose
+- **Orquestación**: Docker Compose para levantar y conectar todos los servicios
 
 ## 📝 Notas adicionales
 
@@ -64,13 +76,6 @@ Deberías ver los siguientes servicios en estado "Up":
 - products-service
 - frontend-app
 
-### 4. Acceder a la aplicación
-
-Una vez que todos los servicios estén en ejecución, puedes acceder a la aplicación en:
-
-- **Frontend**: http://localhost:4200
-- **API de Productos**: http://localhost:8081/api/products
-- **API de Categorías**: http://localhost:8082/api/categorias
 
 
 ## Variables de entorno
