@@ -3,7 +3,7 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Aquí copiarás la carpeta dist SYSTEM ya compilada localmente
-COPY dist/system /usr/share/nginx/html
+COPY dist/system/browser /usr/share/nginx/html
 
 EXPOSE 80
 
