@@ -23,8 +23,8 @@ services:
   # Servicio de Categorías
   categoria-service:
     build:
-      context: ./backend/categoria
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/categoria/Dockerfile
     container_name: categoria-service
     depends_on:
       mysql-db:
@@ -45,8 +45,8 @@ services:
   # Servicio de Productos
   products-service:
     build:
-      context: ./backend/products
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/products/Dockerfile
     container_name: products-service
     depends_on:
       mysql-db:
